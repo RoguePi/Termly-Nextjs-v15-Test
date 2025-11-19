@@ -3,9 +3,16 @@
 import { useEffect, useState } from 'react'
 
 export default function ConsentButton() {
+  const [mounted, setMounted] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     const checkTermly = () => {
       if (typeof window !== 'undefined' && window.termly) {
         setIsLoaded(true)
@@ -16,7 +23,7 @@ export default function ConsentButton() {
     const interval = setInterval(checkTermly, 100)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [mounted])
 
   const openPreferences = () => {
     if (typeof window !== 'undefined' && window.termly) {
@@ -24,7 +31,7 @@ export default function ConsentButton() {
     }
   }
 
-  if (!isLoaded) return null
+  if (!mounted || !isLoaded) return null
 
   return (
     <button 

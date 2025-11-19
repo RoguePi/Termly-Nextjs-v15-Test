@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 declare global {
   interface Window {
@@ -13,7 +13,15 @@ const websiteUUID = '270c91dd-6788-48d0-823d-1e04be35bede'
 const autoBlock = true
 
 export default function TermlyCMP() {
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     const src = new URL(SCRIPT_SRC_BASE)
     src.pathname = `/resource-blocker/${websiteUUID}`
     if (autoBlock) {
@@ -34,7 +42,7 @@ export default function TermlyCMP() {
         existingScript.remove()
       }
     }
-  }, [])
+  }, [mounted])
 
   return null
 }
