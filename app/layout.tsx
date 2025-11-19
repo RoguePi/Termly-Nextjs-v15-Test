@@ -1,9 +1,9 @@
 import './globals.css'
-import Script from 'next/script'
+import TermlyCMP from '../components/TermlyCMP'
 
 export const metadata = {
-  title: 'Next.js v15 - Modern Web App',
-  description: 'A beautiful and elegant Next.js application',
+  title: 'Next.js v16 - Modern Web App',
+  description: 'A beautiful and elegant Next.js v16 application',
 }
 
 export default function RootLayout({
@@ -14,11 +14,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <TermlyCMP />
         {children}
-        <Script 
-          src="https://app.termly.io/resource-blocker/a7f37c49-12f2-4a50-8508-38b56a79b7d1?"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   )

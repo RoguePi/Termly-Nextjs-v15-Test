@@ -1,9 +1,11 @@
+import ConsentButton from '../components/ConsentButton'
+
 export default function Home() {
   return (
     <main>
       <div className="container">
-        <h1>Next.js v15</h1>
-        <p>Modern web development with elegant design and powerful features</p>
+        <h1>Next.js v16</h1>
+        <p>Next-generation web development with cutting-edge features and performance</p>
         
         <div className="features">
           <div className="feature">
@@ -20,6 +22,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <ConsentButton />
     </main>
   )
 }
