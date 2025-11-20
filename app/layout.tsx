@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}>
+      <body>
         <TermlyCMP 
           websiteUUID="270c91dd-6788-48d0-823d-1e04be35bede"
           autoBlock={true}
