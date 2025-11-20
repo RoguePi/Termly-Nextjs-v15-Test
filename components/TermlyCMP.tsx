@@ -1,48 +1,53 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 declare global {
   interface Window {
-    termly: any
+    Termly?: {
+      initialize: () => void
+    }
   }
 }
 
 const SCRIPT_SRC_BASE = 'https://app.termly.io'
-const websiteUUID = '270c91dd-6788-48d0-823d-1e04be35bede'
-const autoBlock = true
 
-export default function TermlyCMP() {
-  const [mounted, setMounted] = useState(false)
+interface TermlyCMPProps {
+  autoBlock?: boolean
+  masterConsentsOrigin?: string
+  websiteUUID: string
+}
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-
+export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID }: TermlyCMPProps) {
+  const scriptSrc = useMemo(() => {
     const src = new URL(SCRIPT_SRC_BASE)
     src.pathname = `/resource-blocker/${websiteUUID}`
     if (autoBlock) {
       src.searchParams.set('autoBlock', 'on')
     }
+    if (masterConsentsOrigin) {
+      src.searchParams.set('masterConsentsOrigin', masterConsentsOrigin)
+    }
+    return src.toString()
+  }, [autoBlock, masterConsentsOrigin, websiteUUID])
 
+  const isScriptAdded = useRef(false)
+
+  useEffect(() => {
+    if (isScriptAdded.current) return
     const script = document.createElement('script')
-    script.id = 'termly-jssdk'
-    script.src = src.toString()
-    
-    if (!document.getElementById('termly-jssdk')) {
-      document.head.appendChild(script)
-    }
+    script.src = scriptSrc
+    document.head.appendChild(script)
+    isScriptAdded.current = true
+  }, [scriptSrc])
 
-    return () => {
-      const existingScript = document.getElementById('termly-jssdk')
-      if (existingScript) {
-        existingScript.remove()
-      }
-    }
-  }, [mounted])
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    window.Termly?.initialize()
+  }, [pathname, searchParams])
 
   return null
 }
