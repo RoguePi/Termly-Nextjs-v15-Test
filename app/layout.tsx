@@ -3,7 +3,7 @@ import Script from 'next/script'
 
 export const metadata = {
   title: 'Next.js v15 - Modern Web App',
-  description: 'A beautiful and elegant Next.js application',
+  description: 'A beautiful and elegant Next.js v15 application',
 }
 
 export default function RootLayout({
@@ -13,12 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-        <Script 
-          src="https://app.termly.io/resource-blocker/a7f37c49-12f2-4a50-8508-38b56a79b7d1?"
+      <body suppressHydrationWarning={true}>
+        <Script
+          src="https://app.termly.io/resource-blocker/270c91dd-6788-48d0-823d-1e04be35bede?autoBlock=on"
           strategy="afterInteractive"
         />
+        {children}
       </body>
     </html>
   )
