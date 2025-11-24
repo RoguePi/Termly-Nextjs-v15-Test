@@ -1,5 +1,5 @@
 import './globals.css'
-import Script from 'next/script'
+import ClientTermly from '../components/ClientTermly'
 
 export const metadata = {
   title: 'Next.js v16 - Modern Web App',
@@ -13,11 +13,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}>
-        <Script
-          src="https://app.termly.io/resource-blocker/270c91dd-6788-48d0-823d-1e04be35bede?autoBlock=on"
-          strategy="afterInteractive"
-        />
+      <body>
+        <ClientTermly />
         {children}
       </body>
     </html>

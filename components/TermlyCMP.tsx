@@ -1,48 +1,73 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 declare global {
   interface Window {
-    termly: any
+    Termly?: {
+      initialize: () => void
+    }
   }
 }
 
 const SCRIPT_SRC_BASE = 'https://app.termly.io'
-const websiteUUID = '270c91dd-6788-48d0-823d-1e04be35bede'
-const autoBlock = true
 
-export default function TermlyCMP() {
+interface TermlyCMPProps {
+  autoBlock?: boolean
+  masterConsentsOrigin?: string
+  websiteUUID: string
+}
+
+function TermlyCMPInner({ autoBlock, masterConsentsOrigin, websiteUUID }: TermlyCMPProps) {
   const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-
+  
+  const scriptSrc = useMemo(() => {
     const src = new URL(SCRIPT_SRC_BASE)
     src.pathname = `/resource-blocker/${websiteUUID}`
     if (autoBlock) {
       src.searchParams.set('autoBlock', 'on')
     }
+    if (masterConsentsOrigin) {
+      src.searchParams.set('masterConsentsOrigin', masterConsentsOrigin)
+    }
+    return src.toString()
+  }, [autoBlock, masterConsentsOrigin, websiteUUID])
 
-    const script = document.createElement('script')
-    script.id = 'termly-jssdk'
-    script.src = src.toString()
+  const isScriptAdded = useRef(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted || isScriptAdded.current) return
     
-    if (!document.getElementById('termly-jssdk')) {
+    // Delay script loading to after hydration
+    const timer = setTimeout(() => {
+      const script = document.createElement('script')
+      script.src = scriptSrc
       document.head.appendChild(script)
-    }
+      isScriptAdded.current = true
+    }, 100)
+    
+    return () => clearTimeout(timer)
+  }, [mounted, scriptSrc])
 
-    return () => {
-      const existingScript = document.getElementById('termly-jssdk')
-      if (existingScript) {
-        existingScript.remove()
-      }
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    if (mounted) {
+      window.Termly?.initialize()
     }
-  }, [mounted])
+  }, [mounted, pathname, searchParams])
 
   return null
+}
+
+export default function TermlyCMP(props: TermlyCMPProps) {
+  return (
+    <TermlyCMPInner {...props} />
+  )
 }
