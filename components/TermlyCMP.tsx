@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 declare global {
@@ -19,9 +19,7 @@ interface TermlyCMPProps {
   websiteUUID: string
 }
 
-function TermlyCMPInner({ autoBlock, masterConsentsOrigin, websiteUUID }: TermlyCMPProps) {
-  const [mounted, setMounted] = useState(false)
-  
+export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID }: TermlyCMPProps) {
   const scriptSrc = useMemo(() => {
     const src = new URL(SCRIPT_SRC_BASE)
     src.pathname = `/resource-blocker/${websiteUUID}`
@@ -35,39 +33,21 @@ function TermlyCMPInner({ autoBlock, masterConsentsOrigin, websiteUUID }: Termly
   }, [autoBlock, masterConsentsOrigin, websiteUUID])
 
   const isScriptAdded = useRef(false)
-  
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
-    if (!mounted || isScriptAdded.current) return
-    
-    // Delay script loading to after hydration
-    const timer = setTimeout(() => {
-      const script = document.createElement('script')
-      script.src = scriptSrc
-      document.head.appendChild(script)
-      isScriptAdded.current = true
-    }, 100)
-    
-    return () => clearTimeout(timer)
-  }, [mounted, scriptSrc])
+    if (isScriptAdded.current) return
+    const script = document.createElement('script')
+    script.src = scriptSrc
+    document.head.appendChild(script)
+    isScriptAdded.current = true
+  }, [scriptSrc])
 
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (mounted) {
-      window.Termly?.initialize()
-    }
-  }, [mounted, pathname, searchParams])
+    window.Termly?.initialize()
+  }, [pathname, searchParams])
 
   return null
-}
-
-export default function TermlyCMP(props: TermlyCMPProps) {
-  return (
-    <TermlyCMPInner {...props} />
-  )
 }

@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <div className="container">
-        <h1>Next.js v16</h1>
+        <h1>Next.js v15</h1>
         <p>Next-generation web development with cutting-edge features and performance</p>
         
         <div className="features">
@@ -22,8 +22,38 @@ export default function Home() {
           </div>
         </div>
         
-        <TrackingElements />
+        {/* YouTube embed - will be blocked by Termly */}
+        <div style={{
+          marginTop: '2rem',
+          textAlign: 'center'
+        }}>
+          <h2 style={{ marginBottom: '1rem', color: '#667eea' }}>Featured Video</h2>
+          <iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/xnOwOBYaA3w" 
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen
+            style={{
+              maxWidth: '100%',
+              borderRadius: '10px'
+            }}
+          ></iframe>
+        </div>
       </div>
+      
+      {/* Google Analytics - will be blocked by Termly */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'GA_MEASUREMENT_ID');
+        `
+      }}></script>
       
       <footer style={{
         marginTop: '4rem',
@@ -39,7 +69,7 @@ export default function Home() {
           |
           <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=0dba82c5-dcfd-4b57-88f5-3e3187a9375d" target="_blank" rel="noopener noreferrer" data-termly-policy="terms" style={{ color: 'inherit', textDecoration: 'none', margin: '0 10px' }}>Terms</a>
           |
-          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=48b90709-f7e3-477a-92e0-c0651c58ea92" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', margin: '0 10px' }}>EULA</a>
+          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=0dba82c5-dcfd-4b57-88f5-3e3187a9375d" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', margin: '0 10px' }}>EULA</a>
           |
           <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=b8805927-bede-443a-8e00-0cecc5e085ab" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', margin: '0 10px' }}>Returns</a>
           |
