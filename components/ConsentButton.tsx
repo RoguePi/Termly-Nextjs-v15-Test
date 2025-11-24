@@ -2,6 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+declare global {
+  interface Window {
+    termly?: {
+      openPreferences: () => void
+    }
+  }
+}
+
 export default function ConsentButton() {
   const [mounted, setMounted] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
