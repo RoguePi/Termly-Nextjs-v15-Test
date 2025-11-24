@@ -1,3 +1,5 @@
+import TrackingElements from '../components/TrackingElements'
+
 export default function Home() {
   return (
     <main>
