@@ -1,17 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
-
-declare global {
-  interface Window {
-    Termly?: {
-      initialize: () => void
-    }
-  }
-}
-
-const SCRIPT_SRC_BASE = 'https://app.termly.io'
+import { useEffect } from 'react'
 
 interface TermlyCMPProps {
   autoBlock?: boolean
@@ -20,34 +9,19 @@ interface TermlyCMPProps {
 }
 
 export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID }: TermlyCMPProps) {
-  const scriptSrc = useMemo(() => {
-    const src = new URL(SCRIPT_SRC_BASE)
-    src.pathname = `/resource-blocker/${websiteUUID}`
+  useEffect(() => {
+    const script = document.createElement('script')
+    let src = `https://app.termly.io/resource-blocker/${websiteUUID}`
     if (autoBlock) {
-      src.searchParams.set('autoBlock', 'on')
+      src += '?autoBlock=on'
     }
     if (masterConsentsOrigin) {
-      src.searchParams.set('masterConsentsOrigin', masterConsentsOrigin)
+      src += autoBlock ? '&' : '?'
+      src += `masterConsentsOrigin=${masterConsentsOrigin}`
     }
-    return src.toString()
-  }, [autoBlock, masterConsentsOrigin, websiteUUID])
-
-  const isScriptAdded = useRef(false)
-
-  useEffect(() => {
-    if (isScriptAdded.current) return
-    const script = document.createElement('script')
-    script.src = scriptSrc
+    script.src = src
     document.head.appendChild(script)
-    isScriptAdded.current = true
-  }, [scriptSrc])
-
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    window.Termly?.initialize()
-  }, [pathname, searchParams])
+  }, [websiteUUID, autoBlock, masterConsentsOrigin])
 
   return null
 }

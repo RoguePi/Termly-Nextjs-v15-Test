@@ -1,3 +1,5 @@
+import ThirdPartyScripts from '../components/ThirdPartyScripts'
+
 export default function Home() {
   return (
     <main>
@@ -38,20 +40,15 @@ export default function Home() {
               maxWidth: '100%',
               borderRadius: '10px'
             }}
+          data-termly-policy="marketing"
+          suppressHydrationWarning={true}
           ></iframe>
         </div>
       </div>
       
-      {/* Google Analytics - will be blocked by Termly */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'GA_MEASUREMENT_ID');
-        `
-      }}></script>
+      <div suppressHydrationWarning={true}>
+        <ThirdPartyScripts />
+      </div>
       
       <footer style={{
         marginTop: '4rem',
