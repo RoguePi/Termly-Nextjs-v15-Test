@@ -59,23 +59,7 @@ export default function Home() {
       </div>
       
       {/* Example third-party scripts - these will be blocked by Termly */}
-      <script 
-        type="text/plain" 
-        data-categories="analytics" 
-        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
-      />
-      <script 
-        type="text/plain" 
-        data-categories="analytics" 
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'GA_MEASUREMENT_ID');
-          `
-        }}
-      />
+      
       {/* Facebook Pixel */}
       <script 
         type="text/plain" 

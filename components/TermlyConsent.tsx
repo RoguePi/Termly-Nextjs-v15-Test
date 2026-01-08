@@ -25,13 +25,35 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
   }, [autoBlock, masterConsentsOrigin, websiteUUID])
 
   const isScriptAdded = useRef(false)
+  const scriptRef = useRef<HTMLScriptElement | null>(null)
 
   useEffect(() => {
-    if (isScriptAdded.current) return
+    if (isScriptAdded.current || typeof window === 'undefined') return
+    
+    // Check if script already exists
+    const existingScript = document.querySelector(`script[src="${scriptSrc}"]`)
+    if (existingScript) {
+      isScriptAdded.current = true
+      return
+    }
+    
     const script = document.createElement('script')
     script.src = scriptSrc
+    script.async = true
+    scriptRef.current = script
     document.head.appendChild(script)
     isScriptAdded.current = true
+    
+    return () => {
+      // Cleanup function to remove script if component unmounts
+      if (scriptRef.current && scriptRef.current.parentNode) {
+        try {
+          scriptRef.current.parentNode.removeChild(scriptRef.current)
+        } catch (e) {
+          // Ignore removeChild errors
+        }
+      }
+    }
   }, [scriptSrc])
 
   const pathname = usePathname()
@@ -39,7 +61,11 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Termly) {
-      window.Termly.initialize()
+      try {
+        window.Termly.initialize()
+      } catch (e) {
+        // Ignore initialization errors
+      }
     }
   }, [pathname, searchParams])
 
