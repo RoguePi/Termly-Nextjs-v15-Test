@@ -50,7 +50,7 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
         try {
           scriptRef.current.parentNode.removeChild(scriptRef.current)
         } catch (e) {
-          // Ignore removeChild errors
+          console.warn('Failed to remove Termly script:', e)  
         }
       }
     }
@@ -64,7 +64,7 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
       try {
         window.Termly.initialize()
       } catch (e) {
-        // Ignore initialization errors
+        console.warn('Error initializing Termly:', e)
       }
     }
   }, [pathname, searchParams])
