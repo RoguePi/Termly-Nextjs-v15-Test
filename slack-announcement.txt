@@ -1,0 +1,26 @@
+🎉 **New Support Article Published: Next.js 15/16 Integration**
+
+Hey team! 👋
+
+We've just published a comprehensive guide for installing Termly's CMP in Next.js 15 and 16:
+📄 https://support.termly.io/hc/en-us/articles/42689325836433-How-to-install-Termly-s-Consent-Management-Platform-in-Next-js-15-16
+
+**What's covered:**
+✅ Both App Router and Pages Router implementations
+✅ Step-by-step installation with code examples
+✅ Troubleshooting common SSR and hydration issues
+✅ Script blocking configuration for third-party tools
+✅ Tested and verified working solutions
+
+**Why this matters:**
+Many customers have been struggling with Next.js 15/16 integration due to SSR conflicts, Suspense requirements, and routing changes. This article provides working solutions for both routing architectures.
+
+**Key highlights:**
+• App Router requires Suspense boundary for useSearchParams()
+• Pages Router has simpler implementation (no 'use client' or Suspense needed)
+• Includes proper script cleanup and duplicate prevention
+• Handles route changes and reinitializes Termly automatically
+
+Feel free to share this with customers experiencing Next.js integration issues! 🚀
+
+cc: @support-team @engineering

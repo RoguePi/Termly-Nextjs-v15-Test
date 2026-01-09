@@ -1,7 +1,5 @@
-'use client'
-
 import { useEffect, useMemo, useRef } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 const SCRIPT_SRC_BASE = 'https://app.termly.io'
 
@@ -26,11 +24,11 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
 
   const isScriptAdded = useRef(false)
   const scriptRef = useRef<HTMLScriptElement | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (isScriptAdded.current || typeof window === 'undefined') return
     
-    // Check if script already exists
     const existingScript = document.querySelector(`script[src="${scriptSrc}"]`)
     if (existingScript) {
       isScriptAdded.current = true
@@ -45,7 +43,6 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
     isScriptAdded.current = true
     
     return () => {
-      // Cleanup function to remove script if component unmounts
       if (scriptRef.current && scriptRef.current.parentNode) {
         try {
           scriptRef.current.parentNode.removeChild(scriptRef.current)
@@ -56,9 +53,6 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
     }
   }, [scriptSrc])
 
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Termly) {
       try {
@@ -67,7 +61,7 @@ export default function TermlyCMP({ autoBlock, masterConsentsOrigin, websiteUUID
         console.warn('Error initializing Termly:', e)
       }
     }
-  }, [pathname, searchParams])
+  }, [router.pathname, router.query])
 
   return null
 }
