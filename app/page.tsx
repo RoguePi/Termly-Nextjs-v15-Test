@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <main>
@@ -52,6 +54,12 @@ export default function Home() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
             <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=1763a4cf-d4be-48ed-864f-f9d653d38d83" style={{ color: '#667eea', textDecoration: 'none' }}>Privacy Policy</a>
             <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=162b211b-1872-4580-831e-c8abb42cf0a7" style={{ color: '#667eea', textDecoration: 'none' }}>Cookie Policy</a>
+            <Link
+  href="/terms-and-conditions"
+  style={{ color: '#667eea', textDecoration: 'none' }}
+>
+  Terms & Conditions
+</Link>
             <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=c39e5888-b2d4-47c2-92b9-ba2e808ecab1" style={{ color: '#667eea', textDecoration: 'none' }}>Return Policy</a>
             <a href="#" className="termly-display-preferences">Consent Preferences</a>
           </div>
