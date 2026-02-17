@@ -1,4 +1,5 @@
 import TrackingElements from '../components/TrackingElements'
+import Script from 'next/script'
 
 export default function Home() {
   return (
@@ -45,15 +46,23 @@ export default function Home() {
       </div>
       
       {/* Google Analytics - will be blocked by Termly */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'GA_MEASUREMENT_ID');
-        `
-      }}></script>
+      <Script 
+        id="gtag-script"
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+      />
+      <Script 
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID');
+          `
+        }}
+      />
       
       <footer style={{
         marginTop: '4rem',
