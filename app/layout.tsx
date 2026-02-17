@@ -1,10 +1,9 @@
 import './globals.css'
-import TermlyCMP from '../components/TermlyCMP'
-import { Suspense } from 'react'
+import Script from 'next/script'
 
 export const metadata = {
-  title: 'Next.js v16 - Modern Web App',
-  description: 'A beautiful and elegant Next.js v16 application',
+  title: 'Next.js v15 - Modern Web App',
+  description: 'A beautiful and elegant Next.js application',
 }
 
 export default function RootLayout({
@@ -16,12 +15,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <Suspense fallback={null}>
-          <TermlyCMP 
-            websiteUUID="270c91dd-6788-48d0-823d-1e04be35bede"
-            autoBlock={true}
-          />
-        </Suspense>
+        <Script 
+          id="audioeye-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `!function(){var b=function(){window.__AudioEyeSiteHash = "35bd0fbd79a49fdf33a0f3bc89f13a83"; var a=document.createElement("script");a.src="https://wsv3cdn.audioeye-services.com/aem.js?h=35bd0fbd79a49fdf33a0f3bc89f13a83";a.type="text/javascript";a.crossOrigin="anonymous";a.setAttribute("async","");document.getElementsByTagName("body")[0].appendChild(a)};"complete"!==document.readyState?window.addEventListener?window.addEventListener("load",b):window.attachEvent&&window.attachEvent("onload",b):b()}();`
+          }}
+        />
       </body>
     </html>
   )
